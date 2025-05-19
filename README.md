@@ -13,6 +13,42 @@ This project aims to:
 
 ---
 
+## Design Plan
+
+┌───────────────────────┐       ┌───────────────────────┐
+│                       │       │                       │
+│    SensorManager      │<>─────│       Sensor          │<|──────┐
+│                       │       │                       │        │
+├───────────────────────┤       ├───────────────────────┤        │
+│ + register_sensor(s)  │       │ + read()              │        │
+│ + get_sensor_data()   │       │ + calibrate()         │        │
+│ + auto_detect()       │       └───────────────────────┘        │
+└───────────────────────┘                                        │
+           ▲                                                     │
+           │                                     ┌───────────────┴───────────────┐
+           ▼                                     │                               │
+┌───────────────────────┐        ┌─────────────────────────┐    ┌─────────────────────────┐
+│                       │        │                         │    │                         │
+│   RobotStateMachine   │        │   ExtendedKalmanFilter  │    │      RobotSimulator     │
+│                       │        │                         │    │                         │
+├───────────────────────┤        ├─────────────────────────┤    ├─────────────────────────┤
+│ + transition(state)   │        │ + predict(u: controls)  │    │ + simulate_motion()     │
+│ + get_current_state() │        │ + update(z: measurement)│    │ + inject_sensor_error() │
+└───────────────────────┘        └─────────────────────────┘    └─────────────────────────┘
+           ▲                              ▲  ▲                             ▲
+           │                              │  │                             │
+           │                              │  └──────────────┐              │
+           │                   ┌──────────┴──────────┐      │              │
+           │                   │                     │      │              │
+           └───────────────────┤   RobotSystem (Main)├──────┘              │
+                               │                     │                     │
+                               ├─────────────────────│                     │
+                               │ + run()             │<────────────────────┘
+                               │ + handle_errors()   │
+                               └─────────────────────┘
+
+---
+
 ## Features
 - **EKF Implementation**: Robust state prediction and update steps for nonlinear systems.
 - **Sensor Abstraction**: Unified interface for IMUs, gyroscopes, accelerometers, etc.
