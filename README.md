@@ -14,7 +14,7 @@ This project aims to:
 ---
 
 ## Design Plan
-
+```plaintext
 ┌───────────────────────┐       ┌───────────────────────┐
 │                       │       │                       │
 │    SensorManager      │<>─────│       Sensor          │<|──────┐
@@ -46,7 +46,7 @@ This project aims to:
                                │ + run()             │<────────────────────┘
                                │ + handle_errors()   │
                                └─────────────────────┘
-
+```
 ---
 
 ## Features
