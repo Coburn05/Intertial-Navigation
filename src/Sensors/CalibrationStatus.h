@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 enum class CalibrationStatus {
   Success = 0,
   Error,
